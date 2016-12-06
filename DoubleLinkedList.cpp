@@ -1,3 +1,4 @@
+#include <iostream>
 #include "DoubleLinkedList.h"
 
 Node* DoubleLinkedList::addNode(Node* node, Node* pre, Node* next) {
@@ -22,25 +23,26 @@ Node* DoubleLinkedList::addNode(Node* node, Node* pre, Node* next) {
 void DoubleLinkedList::removeNode(Node* node) {
     if (NULL == node) return;
 
+    if (NULL != node->pre) {
+        node->pre->next = node->next;
+    }
+
+    if (NULL != node->next) {
+        node->next->pre = node->pre;
+    }
+
+
     if (node == this->head) {
-        this->head = this->head->next;
+        this->head = node->next;
         if (NULL != this->head) {
             this->head->pre = NULL;
-        }
-    } else {
-        if (NULL != node->next) {
-            node->next->pre = node->pre;
         }
     }
 
     if (node == this->tail) {
-        this->tail = this->tail->pre;
+        this->tail = node->pre;
         if (NULL != this->tail) {
             this->tail->next = NULL;
-        }
-    } else {
-        if (NULL != node->pre) {
-            node->pre->next = node->next;
         }
     }
 

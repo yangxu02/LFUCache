@@ -25,7 +25,9 @@ struct ItemNode : Node {
 
     std::string repr() {
         std::stringstream ss;
-        ss << "{k=" << key << ",v=" << data << "," << parent->repr() << "}";
+        ss << this << "{";
+        ss << "k=" << key << ",v=" << data << "," << parent->repr();
+        ss << "}";
         return ss.str();
     }
 };

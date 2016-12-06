@@ -13,7 +13,7 @@
 
 class LFUCache {
     public:
-        LFUCache(int capacity):capacity(capacity) {}
+        LFUCache(int capacity):capacity(capacity), size(0) {}
 
         ~LFUCache() {
             Node* cur = freqList.getHead();
@@ -24,7 +24,13 @@ class LFUCache {
                 cur = next;
             }
 
-            dataSet.clear();
+            if (dataSet.empty()) return;
+
+            for (std::map<int, ItemNode*>::iterator it = dataSet.begin(); it != dataSet.end(); ++it) {
+                Node* node = it->second;
+                dataSet.erase(it);
+                delete node;
+            }
 
         }
 

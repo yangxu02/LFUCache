@@ -7,7 +7,7 @@ void LFUCache::set(int k, int v) {
     if (it == dataSet.end()) {
         if (size >= capacity) { // evit
             FreqNode* freqNode = (FreqNode*)(freqList.getHead());
-            Node* node = freqNode->removeHeader();
+            Node* node = freqNode->removeTail();
             dataSet.erase(((ItemNode*)node)->key);
             delete node;
             if (0 == freqNode->count() && 1 != freqNode->freq) {
@@ -51,6 +51,9 @@ void LFUCache::updateFreq(ItemNode* node) {
     // updateFreq
     FreqNode* cur = (FreqNode*)(node->parent);
     FreqNode* next = (FreqNode*)(cur->next);
+
+    cur->removeItem(node);
+
     if (next == NULL || next->freq != cur->freq + 1) {
         FreqNode* freqNode = new FreqNode(cur->freq + 1);
         freqNode->addItem(node);
@@ -61,7 +64,7 @@ void LFUCache::updateFreq(ItemNode* node) {
         next->addItem(node);
         node->parent = next;
     }
-    cur->removeItem(node);
+
     if (0 == cur->count()) {
         freqList.removeNode(cur);
         delete cur;

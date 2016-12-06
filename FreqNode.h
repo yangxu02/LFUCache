@@ -1,6 +1,7 @@
 #ifndef __LFU_CACHE_FREQ_NODE_H__
 #define __LFU_CACHE_FREQ_NODE_H__
 
+#include <iostream>
 #include <sstream>
 #include "ItemNode.h"
 #include "DoubleLinkedList.h"
@@ -12,13 +13,8 @@ struct FreqNode : Node {
     FreqNode(int freq): freq(freq) {}
 
     ~FreqNode() {
-        Node* cur = itemList.getHead();
-        Node* next;
-        while (NULL != cur) {
-            next = cur->next;
-            delete cur;
-            cur = next;
-        }
+        itemList.setHead(NULL);
+        itemList.setTail(NULL);
     }
 
     void addItem(ItemNode* node) {
@@ -35,6 +31,13 @@ struct FreqNode : Node {
         this->itemList.removeNode(node);
         return node;
     }
+
+    Node* removeTail() {
+        Node* node = this->itemList.getTail();
+        this->itemList.removeNode(node);
+        return node;
+    }
+
 
     int count() {
         return this->itemList.count();
